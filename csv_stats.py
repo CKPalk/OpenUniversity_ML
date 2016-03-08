@@ -3,45 +3,62 @@ import operator
 
 
 def statsForAttr( Data, attr ):
-    attr_index = Data[0].index( attr )
-    counts = {}
-    print( attr_index )
-    for row in Data[1]:
-        print( len( row ) )
-        val = row[ attr_index ]
-        if val in counts:
-            counts[ val ] += 1
-        else:
-            counts[ val ]  = 1
-    output_string = ""
-    sorted_counts = sorted( counts.items(), key=operator.itemgetter(1) )
-    return repr(sorted_counts)
-        
+	attr_index = Data[0].index( attr )
+	counts = {}
+	attr_count = len( Data[0] )
+	print( attr_index )
+	unusable_row_count = 0
+	for row_i, row in enumerate(Data[1]):
+
+		if len( row ) != attr_count:
+			print( "Row", row_i, "does not have", attr_count, "attributes, it has", len( row ) )
+			unusable_row_count += 1
+			continue
+		if row[-1] == "":
+			print( "Row {row_idx} does not have a year value".format( row_idx=row_i ) )
+			unusable_row_count += 1
+			continue
+
+		val = row[ attr_index ]
+		if val in counts:
+			counts[ val ] += 1
+		else:
+			counts[ val ]  = 1
+	sorted_counts = sorted( [ (v,k) for k,v in counts.items() ], reverse=True )
+	sorted_length = len( sorted_counts )
+	print( "Unusable rows:", unusable_row_count )
+	if sorted_length > 250:
+		return ( "{:16}  ==  {:7} unique values\n----------------------------------------\n".format(attr,sorted_length) + 
+					'\n'.join( [ "{}: {}".format(k,v) for v,k in [ sorted_counts[0], sorted_counts[-1] ] ] ) )
+	else:
+		return ( "{:16}  ==  {:7} unique values\n----------------------------------------\n".format(attr,sorted_length) + 
+					'\n'.join( [ "{}: {}".format(k,v) for v,k in sorted_counts ] ) )
+		
 
 
 
 def main( argv ):
-    if len( argv ) != 2:
-        print( "Usage: \"python3 {} <CSV> <Output_File>\"".format( sys.argv[0] ) ); return
+	if len( argv ) != 2:
+		print( "Usage: \"python3 {} <CSV> <Output_File>\"".format( sys.argv[0] ) ); return
 
-    csv_file    = argv[ 0 ]
-    output_file = argv[ 1 ]
+	csv_file	= argv[ 0 ]
+	output_file = argv[ 1 ]
 
-    csv_attrs = []
-    csv_data  = []
-    
-    with open( csv_file, 'r' ) as csv_stream:
-        csv_raw = csv_stream.read()
-        csv_raw_rows = csv_raw.split( '\n' )
-        csv_split_rows = [ row.split( ',' ) for row in csv_raw_rows ]
-        csv_data = ( csv_split_rows[0], csv_split_rows[1:] )
+	csv_attrs = []
+	csv_data  = []
+	
+	with open( csv_file, 'r' ) as csv_stream:
+		csv_raw = csv_stream.read()
+		csv_raw_rows = csv_raw.split( '\n' )
+		csv_split_rows = [ [ val.upper() for val in row.split( ',' ) ] for row in csv_raw_rows ]
+		csv_data = ( csv_split_rows[0], csv_split_rows[1:-1] )
 
-    with open( output_file, 'w+' ) as output_stream:
-        section_split = "\n\n\n"
-        for attr in csv_data[0]:
-            output_stream.write( statsForAttr( csv_data, attr ) )
-            output_stream.write( section_split )
+	with open( output_file, 'w+' ) as output_stream:
+		section_split = "\n\n\n"
+		for attr in csv_data[0]:
+			output_stream.write( statsForAttr( csv_data, attr ) )
+			output_stream.write( section_split )
 
 
 if __name__=='__main__':
-    main( sys.argv[1:] )
+	main( sys.argv[1:] )
