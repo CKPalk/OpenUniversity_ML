@@ -14,7 +14,7 @@ def main( argv ):
 	try:
 		program_name	= argv[ 0 ]
 		csv_filename	= argv[ 1 ]
-		output_filename = argv[ 3 ]
+		output_filename = argv[ 2 ]
 	except:
 		print( "Usage: 'python3 {} <csv_file> <output_file>'".format( sys.argv[0] ) )
 		return

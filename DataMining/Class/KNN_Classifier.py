@@ -47,19 +47,25 @@ for i in range(1, 50, 1):
 	logloss.append(llfun(actual, outcome))
 
 plt.plot(logloss)
-plt.savefig('n_neighbors_vs_logloss.png')
+plt.title( 'KNN vs Logloss' )
+plt.xlabel( 'K Neighbors' )
+plt.ylabel( 'Logistic Loss' )
+
+plt.savefig( sys.argv[ 2 ] )
+
 
 # Submit for K=40
 if len( sys.argv ) != 3: sys.exit( 0 )
 
-test = pd.read_csv( sys.argv[ 2 ], parse_dates=['Dates'])
-x_test = test[['District', 'Zone', 'Day_num', 'Month', 'Year', 'Lon', 'Lat']]
+#test = pd.read_csv( sys.argv[ 2 ], parse_dates=['Dates'])
+#x_test = test[['District', 'Zone', 'Day_num', 'Month', 'Year', 'Lon', 'Lat']]
 knn = KNeighborsClassifier(n_neighbors=40)
 knn.fit(x, y)
-outcomes = knn.predict(x_test)
+print( knn.score( x, y ) )
+#outcomes = knn.predict(x_test)
 
-submit = pd.DataFrame({'Id': test.Id.tolist()})
-for category in y.cat.categories:
-	submit[category] = np.where(outcomes == category, 1, 0)
+#submit = pd.DataFrame({'Id': test.Id.tolist()})
+#for category in y.cat.categories:
+	#submit[category] = np.where(outcomes == category, 1, 0)
 														    
-submit.to_csv('k_nearest_neigbour.csv', index = False)
+#submit.to_csv('k_nearest_neigbour.csv', index = False)
