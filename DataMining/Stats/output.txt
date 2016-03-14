@@ -16,6 +16,13 @@ LATITUDE                            ->    42604 unique cells          0 empty ce
 MONTH                               ->       12 unique cells          0 empty cells
 YEAR                                ->       29 unique cells          0 empty cells
 
+RMS_CDW_ID', 'General_Offense_Number', 'Offense_Code',
+       'Offense_Code_Extension', 'Offense_Type', 'Summary_Offense_Code',
+       'Summarized_Offense_Description', 'District', 'Zone', 'Longitude',
+       'Latitude', 'Month', 'Year', 'Date', 'Day_num', 'Day_str'],
+      dtype='object'
+
+
 
 
 ----------------------------------------
@@ -491,7 +498,7 @@ STAY OUT OF AREA OF PROSTITUTION: 19
 GAMBLE: 11
 FRAUD AND FINANCIAL: 3
 
-
+%m/%d/%y %H:%M
 ----------------------------------------
 1/1/14 0:00: 68
 1/1/01 13:00: 1
