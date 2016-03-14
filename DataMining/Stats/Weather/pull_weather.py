@@ -39,18 +39,10 @@ def findTempAndRain( date ):
 	temperature = float( observation[ 'tempi' ] )
 	if temperature < -50:
 		temperature = None
-	
+
 	rain = int( observation[ 'rain' ] )
 
 	return ( temperature, rain )
-
-	
-
-
-
-	temperature = json['history']['observations'][date.hour - 1]['tempi']
-
-	
 
 
 
@@ -63,11 +55,14 @@ def addWeatherData( csv_filename ):
 
 	for idx, row in df.iterrows():
 		if pd.isnull( row['Temp'] ) and pd.isnull( row['Rain'] ):
-			temp_rain = findTempAndRain( row['Dates'] )
-			print( "Setting temperature and rain for row", idx )
-			df.set_value( idx, 'Temp', temp_rain[0] )
-			df.set_value( idx, 'Rain', int( temp_rain[1] ) )
-			break
+			try:
+				temp_rain = findTempAndRain( row['Dates'] )
+				print( "Setting temperature {} and rain {} for row {}".format( str(temp_rain[0]), str(temp_rain[1]), str(idx) ) )
+				df.set_value( idx, 'Temp', temp_rain[0] )
+				df.set_value( idx, 'Rain', temp_rain[1] )
+			except:
+				print( "Error found, saving csv" )
+				break
 		else:
 			print( "Found temperature", row['Temp'] )
 			print( "Found rain", row['Rain'] )
