@@ -1,0 +1,18 @@
+
+Distribution of dataset through box-whisker
+Show mapped points
+ - we taked these mapped points and build a kde
+Distribution of dataset over the city through kde
+Using the distribution and time I tried to K-NN classify
+Poor results as it's difficult to predict crime
+Show the relation between data and time through drill-downs:
+ - Data to year
+ - Data to month
+ - Data to week
+ - Data to day
+ - Data to hour
+Show relation between time of year and crime rate ( less in winter, more in summer )
+ - Quotes or sources to explain why
+Show temperature vs crime
+ ! hopefully this will help in our conclusion
+
