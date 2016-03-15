@@ -8,12 +8,19 @@ from sklearn.neighbors import KNeighborsClassifier
 
 import sys
 
+
+
+train_attrs = [ 'Lon', 'Lat', 'Temp', 'Rain' ]
+
+
+
 def llfun(act, pred):
 	""" Logloss function for 1/0 probability """
 	return (-(~(act == pred)).astype(int) * math.log(1e-15)).sum() / len(act)
 
 
 train = pd.read_csv( sys.argv[ 1 ], parse_dates=['Dates'])
+train.dropna( inplace=True )
 
 
 # Separate test and train set out of orignal train set.
@@ -28,7 +35,7 @@ print("Test set: %s" % len(knn_test))
 
 # Prepare data sets
 #x = knn_train[[ 'Day_num', 'Month', 'Year', 'Lon', 'Lat']]
-x = knn_train[[ 'Lon', 'Lat']]
+x = knn_train[ train_attrs ]
 y = knn_train['Summary'].astype('category')
 actual = knn_test['Summary'].astype('category')
 
@@ -41,7 +48,7 @@ for i in range(1, 50, 1):
 						    
 	# Predict on test set
 	#outcome = knn.predict(knn_test[[ 'Day_num', 'Month', 'Year', 'Lon', 'Lat']])
-	outcome = knn.predict(knn_test[[ 'Lon', 'Lat']])
+	outcome = knn.predict(knn_test[ train_attrs ])
 									    
 	# Logloss
 	logloss.append(llfun(actual, outcome))

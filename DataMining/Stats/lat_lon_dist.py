@@ -41,46 +41,41 @@ def main( argv ):
 	TrainDF = pd.read_csv( csv_filename )
 
 
-	''' Create a training data subset to map '''
+	''' Create a training data subset to map 
+	District, Zone, Dates, Day_str, Day_num, Month, Year, Summary, Lon, Lat
+	'''
+
+	TrainDF = TrainDF[ TrainDF.Year == 2015 ]
+	TrainDF = TrainDF[ TrainDF.Summary == 'BURGLARY' ]
 
 	TrainDF[ 'Xok' ] = TrainDF[ TrainDF.Lon < mapbox_lon_max ].Lon
 	TrainDF[ 'Yok' ] = TrainDF[ TrainDF.Lat > mapbox_lat_min ].Lat
 
 	TrainDF.dropna()
 
-	TrainDF = TrainDF[1:300000]
 
+	# Create data subset
 
 	# Plot setup
-	g = sb.FacetGrid( TrainDF,
-		col = 'Summary',
-		col_wrap = 5,
-		size = 5,
-		aspect = 1 / asp
+	plt.figure( 
+		figsize = ( map_size_inches, map_size_inches * asp ) 
 	)
 
-	sb.set_style( "whitegrid" )
 
-	for ax in g.axes:
-		ax.grid( False )
-		ax.imshow( mapdata, 
-			cmap	= plt.get_cmap('gray'), 
-			extent	= mapbox,
-			aspect 	= asp
-		)
-	
-	g.set(xticks=[])
-	g.set(yticks=[])
+	print( "Building Kernel Density Estimate Plot" )
+	ax = plt.scatter( TrainDF.Xok, TrainDF.Yok)
 
-	
-	g.map( sb.kdeplot, 'Xok', 'Yok', clip=clipsize )
-	g.set_titles( col_template="{col_name}", fontweight='bold' )
-
-	# plt.suptitle( 'Kernel Density Estimation Plots' )
+	# Show map
+	ax.imshow( mapdata, 
+		cmap	= plt.get_cmap('gray'), 
+		extent	= mapbox,
+		aspect 	= asp
+	)
 
 	plt.savefig( output_filename )
-
 	print( "Plot image saved successfully as", output_filename )
+	plt.show()
+
 	return
 #
 
