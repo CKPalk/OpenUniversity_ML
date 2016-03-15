@@ -2,8 +2,9 @@
 import json
 import sys
 
+import pandas as pd
+import numpy as np
 
-json_str = open( sys.argv[1], 'r' ).read()
-data = json.loads( json_str )
+df = pd.read_csv( sys.argv[1] )
 
-print( data['2002-03-27']['history']['observations'][2] )
+print( df.isnull().sum() )

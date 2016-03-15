@@ -48,7 +48,7 @@ def main( argv ):
 
 	TrainDF.dropna()
 
-	TrainDF = TrainDF[1:30000]
+	TrainDF = TrainDF[1:300000]
 
 
 	# Plot setup
