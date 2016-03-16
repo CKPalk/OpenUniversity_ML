@@ -28,6 +28,7 @@ def main( argv ):
 	TrainDF['Week'] = TrainDF['Dates'].map( lambda x: 
 		time.strftime( "%U", time.strptime(x, '%Y-%m-%d %H:%M:%S' ) ) )
 	TrainDF['event'] = 1
+	TrainDF['Year'] = TrainDF[TrainDF.Year < 2015].Year
 
 	weekly_events = TrainDF[['Week', 'Year', 'event' ]].groupby(['Year','Week']).count().reset_index()
 	weekly_events_year = weekly_events.pivot( index='Week',
