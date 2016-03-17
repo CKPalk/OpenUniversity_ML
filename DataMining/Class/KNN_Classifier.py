@@ -10,7 +10,8 @@ import sys
 
 
 
-train_attrs = [ 'Lon', 'Lat', 'Temp', 'Rain' ]
+train_attrs = [ 'Lon', 'Lat' ]
+#train_attrs = [ 'Lon', 'Lat', 'Temp', 'Rain' ]
 
 
 

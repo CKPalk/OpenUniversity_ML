@@ -32,18 +32,18 @@ def plot_bar( df, title, filename ):
 
 	plt.show()
 
-def plot_top_crimes( df, column, title, fname, items=0):
+def plot_years( df, column, title, fname, items=0):
 	lower_case     = operator.methodcaller('lower')
-	#df.columns     = df.columns.map(lower_case)
+	df.columns     = df.columns.map(lower_case)
 
-	print( df.keys() )
-	by_col         = df.groupby([column])
+	df.year = df[ df.year > 2007 ].year
+
+	by_col         = df.groupby( [column] )
 	col_freq       = by_col.size()
-	#col_freq.index = col_freq.index.map(string.capwords)
 
-	#col_freq.sort_values(ascending=True, inplace=True)
+	col_freq.sort_values(ascending=True, inplace=True)
 
-	plot_bar(col_freq[slice(-1, - items, -1)], title, fname )
+	plot_bar( title, fname )
 
 
 def main( argv ):
@@ -58,11 +58,9 @@ def main( argv ):
 
 	TrainDF = pd.read_csv( csv_filename )
 
-	print( TrainDF.columns )
-
 
 	# Create data subset
-	plot_top_crimes( TrainDF, 'summary', 'Top Crime Categories', output_filename )
+	plot_years( TrainDF, 'year', 'Top Crime Categories', output_filename )
 
 
 	print( "Figure saved successfully as", output_filename )
